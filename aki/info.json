@@ -1,11 +1,12 @@
 {
     "name": "Aki",
-    "short": "Play Akinator in Discord!",
-    "description": "Play Akinator in Discord!",
+    "short": "Играйте в Акинатора в Discord!",
+    "description": "Играйте в Акинатора в Discord!",
     "end_user_data_statement": "This cog does not persistently store any data or metadata about users.",
-    "install_msg": "Thanks for installing Akinator!",
+    "install_msg": "Спасибо за установку Акинатора!",
     "author": [
-        "PhenoM4n4n"
+        "PhenoM4n4n",
+        "MazZz3R"
     ],
     "required_cogs": {},
     "requirements": ["akinator.py[fast_async]"],

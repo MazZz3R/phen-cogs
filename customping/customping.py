@@ -37,10 +37,10 @@ class CustomPing(commands.Cog):
     async def ping(self, ctx):
         """Ping the bot..."""
         start = time.monotonic()
-        message = await ctx.send("Pinging...")
+        message = await ctx.send("Пинг...")
         end = time.monotonic()
         totalPing = round((end - start) * 1000, 2)
-        e = discord.Embed(title="Pinging..", description=f"Overall Latency: {totalPing}ms")
+        e = discord.Embed(title="Пинг...", description=f"Общая задержка: {totalPing}мс")
         await asyncio.sleep(0.25)
         try:
             await message.edit(content=None, embed=e)
@@ -48,7 +48,7 @@ class CustomPing(commands.Cog):
             return
 
         botPing = round(self.bot.latency * 1000, 2)
-        e.description = e.description + f"\nDiscord WebSocket Latency: {botPing}ms"
+        e.description = e.description + f"\nЗадержка в Discord WebSocket: {botPing}мс"
         await asyncio.sleep(0.25)
 
         averagePing = (botPing + totalPing) / 2
@@ -77,8 +77,8 @@ class CustomPing(commands.Cog):
             result = s.results.dict()
             hostPing = round(result["ping"], 2)
 
-            e.title = "Pong!"
-            e.description = e.description + f"\nHost Latency: {hostPing}ms"
+            e.title = "Понг!"
+            e.description = e.description + f"\nЗадержка хоста: {hostPing}мс"
             await asyncio.sleep(0.25)
             try:
                 await message.edit(embed=e)
@@ -92,15 +92,15 @@ class CustomPing(commands.Cog):
         receival_ping = round((now - ctx.message.created_at.timestamp()) * 1000, 2)
 
         e = discord.Embed(
-            title="Pinging..",
-            description=f"Receival Latency: {receival_ping}ms",
+            title="Пинг...",
+            description=f"Задержка получения: {receival_ping}мс",
         )
 
         send_start = time.monotonic()
         message = await ctx.send(embed=e)
         send_end = time.monotonic()
         send_ping = round((send_end - send_start) * 1000, 2)
-        e.description += f"\nSend Latency: {send_ping}ms"
+        e.description += f"\nЗадержка отправки: {send_ping}мс"
         await asyncio.sleep(0.25)
 
         edit_start = time.monotonic()
@@ -110,7 +110,7 @@ class CustomPing(commands.Cog):
             return
         edit_end = time.monotonic()
         edit_ping = round((edit_end - edit_start) * 1000, 2)
-        e.description += f"\nEdit Latency: {edit_ping}ms"
+        e.description += f"\nЗадержка редактирования: {edit_ping}мс"
 
         average_ping = (receival_ping + send_ping + edit_ping) / 3
         if average_ping >= 1000:
@@ -121,7 +121,7 @@ class CustomPing(commands.Cog):
             color = discord.Colour.green()
 
         e.color = color
-        e.title = "Pong!"
+        e.title = "Понг!"
 
         await asyncio.sleep(0.25)
         try:

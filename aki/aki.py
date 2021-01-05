@@ -58,7 +58,7 @@ class AkiMenu(menus.Menu):
             await self.aki.back()
         except akinator.exceptions.CantGoBackAnyFurther:
             await self.ctx.send(
-                "You can't go back on the first question, try a different option instead.",
+                "Вы не можете вернуться, попробуйте другой вариант.",
                 delete_after=10,
             )
         else:
@@ -76,18 +76,18 @@ class AkiMenu(menus.Menu):
     def current_question_embed(self):
         e = discord.Embed(
             color=self.color,
-            title=f"Question #{self.num}",
+            title=f"Вопрос #{self.num}",
             description=self.aki.question,
         )
         if self.aki.progression > 0:
-            e.set_footer(text=f"{round(self.aki.progression, 2)}% guessed")
+            e.set_footer(text=f"{round(self.aki.progression, 2)}% думал")
         return e
 
     async def win(self):
         winner = await self.aki.win()
         win_embed = discord.Embed(
             color=self.color,
-            title=f"I'm {round(float(winner['proba']) * 100)}% sure it's {winner['name']}!",
+            title=f"Я {round(float(winner['proba']) * 100)}% уверен, что это {winner['name']}!",
             description=winner["description"],
         )
         win_embed.set_image(url=winner["absolute_picture_path"])
@@ -112,17 +112,17 @@ class AkiMenu(menus.Menu):
     async def finalize(self, timed_out: bool):
         if timed_out:
             try:
-                await self.message.edit(content="Akinator game timed out.", embed=None)
+                await self.message.edit(content="Время ожидания Акинатора истекло.", embed=None)
             except discord.NotFound:
-                await self.ctx.send("Akinator game timed out.")
+                await self.ctx.send("Время ожидания Акинатора истекло.")
             except discord.Forbidden:
                 pass
 
     async def cancel(self):
         try:
-            await self.message.edit(content="Akinator game cancelled.", embed=None)
+            await self.message.edit(content="Акинатор отменен.", embed=None)
         except discord.NotFound:
-            await self.ctx.send("Akinator game cancelled.")
+            await self.ctx.send("Акинатор отменен.")
         except discord.Forbidden:
             pass
         self.stop()
@@ -130,7 +130,7 @@ class AkiMenu(menus.Menu):
 
 class Aki(commands.Cog):
     """
-    Play Akinator in Discord!
+    Играйте в Акинатора в Discord!
     """
 
     def __init__(self, bot: Red) -> None:
@@ -159,25 +159,25 @@ class Aki(commands.Cog):
     @commands.group(invoke_without_command=True)
     async def aki(self, ctx: commands.Context):
         """
-        Start a game of Akinator!
+        Начни игру в Акинатор!
 
-        Controls:
-        > ✅ : yes
-        > ❎ : no
-        > ❔ : i don't know
-        > 📉 : probably
-        > 📈 : probably not
-        > 🔙 : back
-        > 🏆 : win
-        > 🗑️ : cancel
+        Управление:
+        > ✅ : да
+        > ❎ : нет
+        > ❔ : я не знаю
+        > 📉 : скорее да
+        > 📈 : скорее нет
+        > 🔙 : назад
+        > 🏆 : выиграл
+        > 🗑️ : отменить
         """
         await ctx.trigger_typing()
         aki = Akinator()
         try:
-            await aki.start_game()
+            await aki.start_game(language="ru")
         except Exception:
             return await ctx.send(
-                "I encountered an error while connecting to the Akinator servers."
+                "Я обнаружил ошибку при подключении к серверам Akinator."
             )
         menu = AkiMenu(aki, await ctx.embed_color())
         await menu.start(ctx)
